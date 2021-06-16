@@ -14,7 +14,7 @@ const Header = ({ user, logout, country = 'Russian Federation' }) => {
     <header className={s.header}>
       <Link to={ROUTES.HOME}>
         <div className={s.header__logoContainer}>
-          <img src="/logo.png" alt="Amazon Logo" />
+          <img src="/logo-light.png" alt="Amazon Logo" />
         </div>
       </Link>
       {country && (

@@ -1,6 +1,6 @@
 import * as TYPES from '../TYPES';
 
-export const userReducer = (state = [], action) => {
+export const cartReducer = (state = [], action) => {
   switch (action.type) {
     case TYPES.ADD_TO_CART: {
       const target = state.findIndex((item) => item.id === action.payload.id);

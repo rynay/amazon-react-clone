@@ -1,0 +1,119 @@
+.overlay {
+  min-height: 100vh;
+  background-color: rgb(256, 256, 256);
+}
+
+.container {
+  max-width: max-content;
+  margin: 0 auto;
+}
+
+.logoContainer {
+  max-width: 20rem;
+  height: 8rem;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  &__container {
+    width: 40rem;
+    max-width: 90vw;
+    border-radius: 0.25em;
+    border: 0.1rem solid #ccc;
+    padding: 1.5em 2em;
+    background-color: #fff;
+
+    & > * {
+      margin-bottom: 2rem;
+    }
+  }
+
+  &__label {
+    font-weight: bold;
+    padding: 0.25em 0;
+  }
+  &__input {
+    margin-bottom: 0.5em;
+    padding: 0.4em;
+    border: 0.1rem solid #aaa;
+  }
+
+  &__button {
+    padding: 0.5em;
+    margin-top: 1em;
+    border: 0.1rem solid rgb(168, 92, 20);
+    cursor: pointer;
+    background-image: linear-gradient(
+      to bottom,
+      rgb(255, 205, 111),
+      rgb(253, 179, 68)
+    );
+    &:hover,
+    &:focus {
+      background-image: linear-gradient(
+        to bottom,
+        rgb(255, 184, 53),
+        rgb(255, 165, 31)
+      );
+    }
+  }
+}
+
+.agreement {
+  a {
+    padding: 0 0.2em;
+    text-decoration: none;
+    &:hover,
+    &:focus {
+      text-decoration: underline;
+    }
+  }
+}
+
+.alternative {
+  padding: 1em 0 2em;
+  display: flex;
+  flex-direction: column;
+  &__title {
+    padding: 1em 0;
+    color: rgb(100, 100, 100);
+    display: flex;
+    span {
+      flex: 1;
+      text-align: center;
+    }
+    &_decoration {
+      display: block;
+      height: 0.1rem;
+      align-self: center;
+      background-color: #ccc;
+    }
+  }
+  &__button {
+    color: inherit;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    padding: 0.75em 1em;
+    border-radius: 0.15em;
+    border: 0.1rem solid #aaa;
+    background-image: linear-gradient(
+      to bottom,
+      rgb(240, 240, 240),
+      rgb(219, 219, 219)
+    );
+    &:hover,
+    &:focus {
+      background-image: linear-gradient(
+        to bottom,
+        rgb(230, 230, 230),
+        rgb(204, 204, 204)
+      );
+    }
+  }
+}
