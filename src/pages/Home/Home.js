@@ -3,9 +3,9 @@ import Slider from '../../components/sliders/Home';
 
 const Home = () => {
   return (
-    <main className={s.home}>
+    <div className={s.home}>
       <Slider />
-    </main>
+    </div>
   );
 };
 
