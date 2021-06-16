@@ -23,7 +23,7 @@ export const App = () => {
             <Route path={ROUTES.SIGN_IN} component={SignIn} />
             <Route path={ROUTES.SIGN_UP} component={SignUp} />
             <Route path={ROUTES.SEARCH} component={Search} />
-            <Route path={ROUTES.HOME} component={Home} />
+            <Route exact path={ROUTES.HOME} component={Home} />
           </Suspense>
         </Switch>
       </main>

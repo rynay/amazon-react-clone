@@ -1,0 +1,19 @@
+.home {
+  position: relative;
+  &__products {
+    padding: 0 2em 5rem;
+    position: absolute;
+    top: 35rem;
+    z-index: 999;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(25rem, 1fr));
+    gap: 3rem;
+
+    & > * {
+      justify-self: center;
+    }
+  }
+}

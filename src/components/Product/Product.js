@@ -1,3 +1,9 @@
+import {
+  AddShoppingCart,
+  Star,
+  StarHalf,
+  StarOutline,
+} from '@material-ui/icons';
 import { useHistory } from 'react-router-dom';
 import * as ROUTES from '../../constants/ROUTES';
 import s from './Product.module.scss';
@@ -13,8 +19,24 @@ const Product = ({ product, user, addToCart }) => {
       <h2 className={s.product__title}>{product.title}</h2>
       <p className={s.product__rating}>
         {new Array(Math.floor(product.rating)).fill().map(() => (
-          <span>⭐</span>
+          <span>
+            <Star />
+          </span>
         ))}
+        {Math.floor(product.rating) !== Math.ceil(product.rating) && (
+          <StarHalf />
+        )}
+        {new Array(
+          5 -
+            Math.floor(product.rating) -
+            (Math.floor(product.rating) !== Math.ceil(product.rating) ? 1 : 0)
+        )
+          .fill()
+          .map(() => (
+            <span>
+              <StarOutline />
+            </span>
+          ))}
       </p>
       <p className={s.product__price}>{product.price}$</p>
       <button
@@ -35,7 +57,10 @@ const Product = ({ product, user, addToCart }) => {
           }
         }}
         className={s.product__button}>
-        Add to cart
+        <span className={s.icon}>
+          <AddShoppingCart />
+        </span>
+        <span>Add to cart</span>
       </button>
     </section>
   );
