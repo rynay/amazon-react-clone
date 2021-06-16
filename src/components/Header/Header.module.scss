@@ -1,0 +1,135 @@
+.header {
+  background-color: #131921;
+  padding: 0.5em 1em;
+  display: flex;
+  align-items: center;
+
+  &__logoContainer {
+    padding: 0.5em 0;
+    width: 6em;
+    max-width: 20vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  &__location {
+    padding: 0.5em 1em;
+    display: flex;
+    align-items: center;
+
+    svg {
+      fill: #fff;
+      height: 2rem;
+      width: 2rem;
+      margin-right: 0.5em;
+    }
+
+    div {
+      display: flex;
+      flex-direction: column;
+    }
+
+    span:nth-of-type(1) {
+      color: #ccc;
+      font-size: 0.8em;
+    }
+    span:nth-of-type(2) {
+      color: #fff;
+    }
+  }
+  &__form {
+    flex: 1;
+    display: flex;
+    border-radius: 0.25em;
+    border: 0.3rem solid transparent;
+    overflow: hidden;
+
+    &_focused {
+      border: 0.3rem solid #febd69;
+      padding: -1rem;
+    }
+
+    input {
+      flex: 1;
+      padding: 0.5em;
+      border: 0;
+      border-radius: 0.25em 0 0 0.25em;
+
+      &:focus {
+        border-radius: 0;
+        border: 0;
+        outline: none;
+      }
+    }
+    button {
+      padding: 0.25em 0.5em;
+      background-color: #febd69;
+      border: 0;
+      border-radius: 0 0.25em 0.25em 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      svg {
+        height: 3rem;
+        width: 3rem;
+      }
+    }
+  }
+  &__nav {
+    display: flex;
+    &Item {
+      border: 0;
+      text-decoration: none;
+      background-color: transparent;
+      cursor: pointer;
+      padding: 0.5em;
+      display: flex;
+      flex-direction: column;
+
+      span:nth-of-type(1) {
+        color: #ccc;
+        font-size: 0.8em;
+      }
+      span:nth-of-type(2) {
+        color: #fff;
+      }
+    }
+    &Cart {
+      height: 4.5rem;
+      width: 5rem;
+      position: relative;
+      span:nth-child(1) {
+        color: #fff;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        // justify-content: center;
+        align-items: center;
+        span {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-25%, -85%);
+          z-index: 2;
+
+          font-size: 2rem;
+          font-weight: bold;
+          color: #ff9100;
+          text-shadow: 0.05em 0.05em 0.05em rgb(177, 85, 0);
+        }
+        svg {
+          height: 5rem;
+          width: 5rem;
+        }
+      }
+      span:nth-child(2) {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+      }
+    }
+  }
+}
