@@ -22,7 +22,7 @@ export const cartReducer = (state = [], action) => {
       }
     }
     case TYPES.REMOVE_FROM_CART: {
-      const target = state.findIndex((item) => item.id === action.payload);
+      const target = state.findIndex((item) => item.id === action.payload.id);
       if (target !== -1 && state[target].count === 1) {
         return state.filter((item) => item.id !== action.payload.id);
       } else {
@@ -31,7 +31,7 @@ export const cartReducer = (state = [], action) => {
           {
             ...state[target],
             count: state[target].count - 1,
-            total: state[target].count - state[target].price,
+            total: state[target].total - state[target].price,
           },
           ...state.slice(target + 1),
         ];

@@ -1,0 +1,38 @@
+.checkout {
+  display: flex;
+
+  &__left {
+    flex: 2;
+  }
+  &__right {
+    flex: 1;
+  }
+}
+
+.item {
+  padding: 1em;
+  background-color: #fff;
+  border: 0.1rem solid #ccc;
+  display: flex;
+
+  &:first-child {
+    margin-top: 1rem;
+  }
+  margin-bottom: 1rem;
+
+  &__imageContainer {
+    max-height: 12rem;
+    max-width: 12rem;
+    width: max-content;
+
+    img {
+      height: 100%;
+      width: 100%;
+      object-fit: contain;
+    }
+  }
+  &__content {
+    flex: 1;
+    padding: 0.5em 1em;
+  }
+}
