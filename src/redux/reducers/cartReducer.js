@@ -12,7 +12,7 @@ export const cartReducer = (state = [], action) => {
             count: state[target].count + 1,
             total: (state[target].count + 1) * state[target].price,
           },
-          ...state.slice(target),
+          ...state.slice(target + 1),
         ];
       } else {
         return [
@@ -33,7 +33,7 @@ export const cartReducer = (state = [], action) => {
             count: state[target].count - 1,
             total: state[target].count - state[target].price,
           },
-          ...state.slice(target),
+          ...state.slice(target + 1),
         ];
       }
     }
