@@ -3,10 +3,10 @@ import * as ROUTES from './constants/ROUTES';
 import { Header } from './components/Header';
 import { lazy, Suspense } from 'react';
 import s from './App.module.scss';
+import SignIn from './pages/SignIn';
 
 const Home = lazy(() => import('./pages/Home/index'));
 const Search = lazy(() => import('./pages/Search/index'));
-const SignIn = lazy(() => import('./pages/SignIn/index'));
 const SignUp = lazy(() => import('./pages/SignUp/index'));
 
 export const App = () => {
