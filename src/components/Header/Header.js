@@ -1,10 +1,12 @@
 import * as ROUTES from '../../constants/ROUTES';
+import { logout } from '../../redux/AC';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import { connect } from 'react-redux';
 import s from './Header.module.scss';
 import { Search, Room, ShoppingCart } from '@material-ui/icons';
 
-const Header = ({ user, logout, country = 'Russian Federation' }) => {
+const Header = ({ user, country = 'Russian Federation' }) => {
   const [input, setInput] = useState('');
   const [isInputFocused, setIsInputFocused] = useState(false);
   const handleSearch = (e) => {
@@ -47,7 +49,14 @@ const Header = ({ user, logout, country = 'Russian Federation' }) => {
       </form>
       <nav className={s.header__nav}>
         {user ? (
-          <button className={s.header__navItem} onClick={() => logout()}>
+          <button
+            className={s.header__navItem}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                logout();
+              }
+            }}
+            onClick={() => logout()}>
             <span>Hello, {user.displayName}</span>
             <span>Sign Out</span>
           </button>
@@ -57,15 +66,13 @@ const Header = ({ user, logout, country = 'Russian Federation' }) => {
             <span>Sign In</span>
           </Link>
         )}
-        <Link
-          className={s.header__navItem}
-          to={user ? ROUTES.RETURNS_AND_ORDERS : ROUTES.SIGN_IN}>
+        <Link className={s.header__navItem} to={ROUTES.RETURNS_AND_ORDERS}>
           <span>Returns</span>
           <span>& Orders</span>
         </Link>
         <Link
           className={`${s.header__navItem} ${s.header__navCart}`}
-          to={user ? ROUTES.CHECKOUT : ROUTES.SIGN_IN}
+          to={ROUTES.CHECKOUT}
           aria-label="Shopping cart">
           <span>
             <ShoppingCart />
@@ -77,4 +84,8 @@ const Header = ({ user, logout, country = 'Russian Federation' }) => {
   );
 };
 
-export default Header;
+const mapStateToProps = (state) => ({
+  user: state.user,
+});
+
+export default connect(mapStateToProps)(Header);
