@@ -4,7 +4,7 @@ export const cartReducer = (state = [], action) => {
   switch (action.type) {
     case TYPES.ADD_TO_CART: {
       const target = state.findIndex((item) => item.id === action.payload.id);
-      if (target) {
+      if (target !== -1) {
         return [
           ...state.slice(0, target),
           {
@@ -23,7 +23,7 @@ export const cartReducer = (state = [], action) => {
     }
     case TYPES.REMOVE_FROM_CART: {
       const target = state.findIndex((item) => item.id === action.payload);
-      if (target && state[target].count === 1) {
+      if (target !== -1 && state[target].count === 1) {
         return state.filter((item) => item.id !== action.payload.id);
       } else {
         return [

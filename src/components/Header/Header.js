@@ -1,12 +1,12 @@
 import * as ROUTES from '../../constants/ROUTES';
-import { logout } from '../../redux/AC';
+import * as AC from '../../redux/AC';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { connect } from 'react-redux';
 import s from './Header.module.scss';
 import { Search, Room, ShoppingCart } from '@material-ui/icons';
 
-const Header = ({ user, country = 'Russian Federation' }) => {
+const Header = ({ user, logout, country = 'Russian Federation' }) => {
   const [input, setInput] = useState('');
   const [isInputFocused, setIsInputFocused] = useState(false);
   const handleSearch = (e) => {
@@ -53,7 +53,7 @@ const Header = ({ user, country = 'Russian Federation' }) => {
             className={s.header__navItem}
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
-                logout();
+                return logout();
               }
             }}
             onClick={() => logout()}>
@@ -87,5 +87,8 @@ const Header = ({ user, country = 'Russian Federation' }) => {
 const mapStateToProps = (state) => ({
   user: state.user,
 });
+const mapDispatchToProps = (dispatch) => ({
+  logout: () => dispatch(AC.logout()),
+});
 
-export default connect(mapStateToProps)(Header);
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

@@ -7,6 +7,8 @@ import {
 import { useHistory } from 'react-router-dom';
 import * as ROUTES from '../../constants/ROUTES';
 import s from './Product.module.scss';
+import { connect } from 'react-redux';
+import * as AC from '../../redux/AC';
 
 const Product = ({ product, user, addToCart }) => {
   const history = useHistory();
@@ -18,8 +20,8 @@ const Product = ({ product, user, addToCart }) => {
       </div>
       <h2 className={s.product__title}>{product.title}</h2>
       <p className={s.product__rating}>
-        {new Array(Math.floor(product.rating)).fill().map(() => (
-          <span>
+        {new Array(Math.floor(product.rating)).fill().map((_, i) => (
+          <span key={i}>
             <Star />
           </span>
         ))}
@@ -32,8 +34,8 @@ const Product = ({ product, user, addToCart }) => {
             (Math.floor(product.rating) !== Math.ceil(product.rating) ? 1 : 0)
         )
           .fill()
-          .map(() => (
-            <span>
+          .map((_, i) => (
+            <span key={i}>
               <StarOutline />
             </span>
           ))}
@@ -42,7 +44,7 @@ const Product = ({ product, user, addToCart }) => {
       <button
         onClick={() => {
           if (user) {
-            addToCart(product.id);
+            addToCart(product);
           } else {
             history.push(ROUTES.SIGN_IN);
           }
@@ -50,7 +52,7 @@ const Product = ({ product, user, addToCart }) => {
         onKeyDown={(e) => {
           if (e.key === 'Enter') {
             if (user) {
-              addToCart(product.id);
+              addToCart(product);
             } else {
               history.push(ROUTES.SIGN_IN);
             }
@@ -66,4 +68,11 @@ const Product = ({ product, user, addToCart }) => {
   );
 };
 
-export default Product;
+const mapStateToProps = (state) => ({
+  user: state.user,
+});
+const mapDispatchToProps = (dispatch) => ({
+  addToCart: (item) => dispatch(AC.addToCart(item)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Product);

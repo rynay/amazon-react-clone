@@ -37,16 +37,55 @@ export const signUp =
         dispatch(setError(error.message));
       });
   };
-export const logout = () => {
+export const logout = () => (dispatch) => {
+  const id = Math.random();
   localStorage.removeItem('user');
+  firebaseLogout().then(() => {
+    dispatch(
+      addNotification({
+        message: `You signed out`,
+        id,
+      })
+    );
+    const timer = setTimeout(() => {
+      dispatch(removeNotification(id));
+    }, 5000);
+    return () => clearTimeout(timer);
+  });
+};
+
+const firebaseLogout = () => {
   return auth.signOut();
 };
 
 export const setError = (payload) => ({ type: TYPES.SET_ERROR, payload });
 const setUser = (payload) => ({ type: TYPES.SET_USER, payload });
-export const addToCart = (payload) => ({ type: TYPES.ADD_TO_CART, payload });
+export const addToCart = (payload) => (dispatch) => {
+  const id = Math.random();
+  dispatch({ type: TYPES.ADD_TO_CART, payload });
+  dispatch(
+    addNotification({
+      img: payload.img,
+      message: `${payload.title} was added to your cart`,
+      id,
+    })
+  );
+  const timer = setTimeout(() => {
+    dispatch(removeNotification(id));
+  }, 5000);
+  return () => clearTimeout(timer);
+};
 export const removeFromCart = (payload) => ({
   type: TYPES.REMOVE_FROM_CART,
   payload,
 });
 export const clearCart = () => ({ type: TYPES.CLEAR_CART });
+
+const addNotification = (payload) => ({
+  type: TYPES.ADD_NOTIFICATION,
+  payload,
+});
+export const removeNotification = (payload) => ({
+  type: TYPES.REMOVE_NOTIFICATION,
+  payload,
+});

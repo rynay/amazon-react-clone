@@ -1,34 +1,43 @@
-import { useState } from 'react';
+import * as AC from '../../redux/AC';
 import { connect } from 'react-redux';
 import s from './Notification.module.scss';
+import FlipMove from 'react-flip-move';
+import { Close } from '@material-ui/icons';
 
-const Notification = ({ lastAddedItem }) => {
-  const [item, setItem] = useState(lastAddedItem);
+const Notification = ({ notifications, removeNotification }) => {
   return (
     <div className={s.notification}>
-      {item && (
-        <>
-          <div className={s.notification__imageContainer}>
-            <img src={item.img} alt="" />
-          </div>
-          <p>{item.title} was added to your cart.</p>
-          <button
-            onClick={() => setItem(null)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                setItem(null);
-              }
-            }}>
-            X
-          </button>
-        </>
-      )}
+      <FlipMove>
+        {notifications.map((notification) => (
+          <section className={s.notification__item} key={notification.id}>
+            {notification.img && (
+              <div className={s.notification__imageContainer}>
+                <img src={notification.img} alt="" />
+              </div>
+            )}
+            <p className={s.notification__message}>{notification.message}</p>
+            <button
+              className={s.notification__button}
+              onClick={() => removeNotification(notification.id)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  removeNotification(notification.id);
+                }
+              }}>
+              <Close />
+            </button>
+          </section>
+        ))}
+      </FlipMove>
     </div>
   );
 };
 
 const mapStateToProps = (state) => ({
-  lastAddedItem: state.cart[state.cart.length],
+  notifications: state.notifications,
+});
+const mapDispatchToProps = (dispatch) => ({
+  removeNotification: (id) => dispatch(AC.removeNotification(id)),
 });
 
-export default connect(mapStateToProps)(Notification);
+export default connect(mapStateToProps, mapDispatchToProps)(Notification);
