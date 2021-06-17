@@ -1,9 +1,9 @@
-import { firebase } from '../lib/firebase';
+import { firestore, auth } from '../lib/firebase';
 import * as TYPES from './TYPES';
 
 export const init = () => (dispatch) => {
   const localUser = JSON.parse(localStorage.getItem('user'));
-  const listener = firebase.auth().onAuthStateChanged((user) => {
+  const listener = auth.onAuthStateChanged((user) => {
     if (user) {
       localStorage.setItem('user', JSON.stringify(user));
       dispatch(setUser(user));
@@ -19,35 +19,30 @@ export const init = () => (dispatch) => {
 export const signIn =
   ({ email, password }) =>
   (dispatch) => {
-    try {
-      return firebase.auth().signInWithEmailAndPassword(email, password);
-    } catch (error) {
-      dispatch(setError(error));
-    }
+    return auth
+      .signInWithEmailAndPassword(email, password)
+      .catch((error) => dispatch(setError(error.message)));
   };
 export const signUp =
   ({ email, password, displayName }) =>
   async (dispatch) => {
-    try {
-      return firebase
-        .auth()
-        .createUserWithEmailAndPassword(email, password)
-        .then(() =>
-          firebase.auth().currentUser.updateProfile({
-            displayName,
-          })
-        );
-    } catch (error) {
-      dispatch(setError(error));
-    }
+    return auth
+      .createUserWithEmailAndPassword(email, password)
+      .then(() =>
+        auth.currentUser.updateProfile({
+          displayName,
+        })
+      )
+      .catch((error) => {
+        dispatch(setError(error.message));
+      });
   };
-
 export const logout = () => {
   localStorage.removeItem('user');
-  return firebase.auth().signOut();
+  return auth.signOut();
 };
 
-const setError = (payload) => ({ type: TYPES.SET_ERROR, payload });
+export const setError = (payload) => ({ type: TYPES.SET_ERROR, payload });
 const setUser = (payload) => ({ type: TYPES.SET_USER, payload });
 export const addToCart = (payload) => ({ type: TYPES.ADD_TO_CART, payload });
 export const removeFromCart = (payload) => ({

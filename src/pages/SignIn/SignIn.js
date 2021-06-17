@@ -4,13 +4,23 @@ import s from '../SignIn-SignUp.module.scss';
 import * as AC from '../../redux/AC';
 import * as ROUTES from '../../constants/ROUTES';
 import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
 
-const SignIn = () => {
+const SignIn = ({ error, setError, signIn }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (email.trim() && password.trim()) {
+      signIn({ email, password });
+    }
   };
+
+  useEffect(() => {
+    if (error) setError(null);
+  }, [email, password]);
+
   return (
     <div className={s.overlay}>
       <section className={s.container}>
@@ -19,6 +29,9 @@ const SignIn = () => {
         </Link>
         <div className={s.form__container}>
           <h2>Sign In</h2>
+          <div className={`${s.warning} ${error ? s.warning_open : ''}`}>
+            {error}
+          </div>
           <form className={s.form} onSubmit={handleSubmit}>
             <label htmlFor="email" className={s.form__label}>
               Email address
@@ -63,8 +76,13 @@ const SignIn = () => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  signIn: (data) => dispatch(AC.signIn(data)),
+const mapStateToProps = (state) => ({
+  error: state.error,
 });
 
-export default connect(null, mapDispatchToProps)(SignIn);
+const mapDispatchToProps = (dispatch) => ({
+  signIn: (data) => dispatch(AC.signIn(data)),
+  setError: (data) => dispatch(AC.setError(data)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

@@ -1,3 +1,21 @@
+.warning {
+  border: 0.2rem solid transparent;
+  color: rgb(255, 94, 0);
+  padding: 0 0.5em;
+  height: 0;
+  overflow: hidden;
+  border-radius: 0.25em;
+  margin-bottom: 0 !important;
+  transition: all 0.2s;
+
+  &_open {
+    border: 0.2rem solid rgb(255, 94, 0);
+    padding: 0.5em;
+    height: max-content;
+    margin-bottom: 1rem !important;
+  }
+}
+
 .overlay {
   min-height: 100vh;
   background-color: rgb(256, 256, 256);
@@ -39,8 +57,9 @@
   }
   &__input {
     margin-bottom: 0.5em;
-    padding: 0.4em;
+    padding: 0.6em;
     border: 0.1rem solid #aaa;
+    border-radius: 0.25em;
   }
 
   &__button {
