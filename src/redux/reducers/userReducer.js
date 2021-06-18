@@ -1,6 +1,8 @@
 import * as TYPES from '../TYPES';
 
-export const userReducer = (state = null, action) => {
+const localUser = JSON.parse(localStorage.getItem('user')) || null;
+
+export const userReducer = (state = localUser, action) => {
   switch (action.type) {
     case TYPES.SET_USER:
       return action.payload;
