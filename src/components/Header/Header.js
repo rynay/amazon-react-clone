@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import s from './Header.module.scss';
 import { Search, Room, ShoppingCart } from '@material-ui/icons';
 
-const Header = ({ user, logout, country = 'Russian Federation' }) => {
+const Header = ({ cart, user, logout, country = 'Russian Federation' }) => {
   const [input, setInput] = useState('');
   const [isInputFocused, setIsInputFocused] = useState(false);
   const handleSearch = (e) => {
@@ -76,6 +76,11 @@ const Header = ({ user, logout, country = 'Russian Federation' }) => {
           aria-label="Shopping cart">
           <span>
             <ShoppingCart />
+            <span className={s.header__cartCount}>
+              {cart.length === 0
+                ? '0'
+                : cart.reduce((acc, item) => acc + +item.count, 0)}
+            </span>
           </span>
         </Link>
       </nav>
@@ -85,6 +90,7 @@ const Header = ({ user, logout, country = 'Russian Federation' }) => {
 
 const mapStateToProps = (state) => ({
   user: state.user,
+  cart: state.cart,
 });
 const mapDispatchToProps = (dispatch) => ({
   logout: () => dispatch(AC.logout()),
