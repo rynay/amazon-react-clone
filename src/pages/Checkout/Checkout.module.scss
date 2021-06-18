@@ -43,6 +43,26 @@
     display: flex;
     justify-content: center;
     align-items: center;
+
+    &_add {
+      background-color: #000;
+      border-radius: 0.25em;
+      border-color: #000;
+      svg {
+        fill: #fff;
+        font-size: 1.8rem;
+      }
+    }
+    &_remove {
+      background-color: #fff;
+      border-radius: 0.25em;
+      border-color: #000;
+
+      svg {
+        fill: #000;
+        font-size: 1.8rem;
+      }
+    }
   }
 
   &__price {
