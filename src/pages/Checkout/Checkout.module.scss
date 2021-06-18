@@ -1,9 +1,13 @@
 .checkout {
   display: flex;
   background-color: #fff;
+  flex-wrap: wrap;
 
   &__left {
     flex: 2;
+    @media screen and (max-width: 50em) {
+      flex-basis: 100%;
+    }
   }
   &__right {
     padding: 1em;
@@ -30,13 +34,6 @@
       color: rgb(226, 0, 0);
     }
   }
-  &__greeting {
-    padding: 2rem 2rem;
-    font-size: 1.8rem;
-    font-weight: bold;
-    border-bottom: 0.2rem solid #ddd;
-    margin-bottom: 1rem;
-  }
   &__warning {
     padding: 0 1em;
     font-weight: bold;
@@ -44,6 +41,11 @@
     height: 0;
     overflow: hidden;
     transition: all 0.2s;
+
+    @media screen and (max-width: 50em) {
+      font-size: 2rem;
+      text-align: center;
+    }
 
     &_open {
       padding: 1em;
@@ -58,6 +60,15 @@
   border: 0.1rem solid #ccc;
   display: flex;
   margin-bottom: 1rem;
+
+  @media screen and (max-width: 50em) {
+    flex-direction: column;
+    align-items: center;
+
+    &__imageContainer {
+      height: 20rem;
+    }
+  }
 
   &__checkout {
     display: flex;
