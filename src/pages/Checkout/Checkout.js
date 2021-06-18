@@ -3,15 +3,21 @@ import * as AC from '../../redux/AC';
 import s from './Checkout.module.scss';
 import FlipMove from 'react-flip-move';
 import { Remove, Add } from '@material-ui/icons';
+import { useState } from 'react';
 
-const Checkout = ({ user, cart, addToCart, removeFromCart, clearCart }) => {
+const Checkout = ({ cart, addToCart, removeFromCart, clearCart }) => {
+  const [isChecked, setIsChecked] = useState(false);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
+
   return (
     <div className={s.checkout}>
       <div className={s.checkout__left}>
         <div className={s.checkout__bannerContainer}>
           <img src="/banner.jpg" alt="" />
         </div>
-        <p className={s.checkout__greeting}>Hello, {user.displayName}</p>
         <div
           className={`${s.checkout__warning} ${
             cart.length === 0 ? s.checkout__warning_open : ''
@@ -58,7 +64,7 @@ const Checkout = ({ user, cart, addToCart, removeFromCart, clearCart }) => {
                   </div>
                   <p className={s.item__total}>
                     <span>Price: </span>
-                    <span className={s.item__price}>{item.total} $</span>
+                    <span className={s.item__price}>$ {item.total}</span>
                   </p>
                 </div>
               </li>
@@ -67,9 +73,28 @@ const Checkout = ({ user, cart, addToCart, removeFromCart, clearCart }) => {
         </ul>
       </div>
       <div className={s.checkout__right}>
+        <div className={s.proceed}>
+          <p className={s.proceed__subtotal}>
+            Subtotal ({cart.reduce((acc, item) => acc + +item.count, 0)} item
+            {cart.reduce((acc, item) => acc + +item.count, 0) === 1 ? '' : 's'}
+            ): <span>$ {cart.reduce((acc, item) => acc + +item.total, 0)}</span>
+          </p>
+          <form onSubmit={handleSubmit} className={s.proceed__form}>
+            <div>
+              <input
+                onChange={(e) => setIsChecked(e.target.value)}
+                value={isChecked}
+                type="checkbox"
+                id="checkbox"
+              />
+              <label htmlFor="checkbox">This order contains a gift</label>
+            </div>
+            <button>Proceed to Payment</button>
+          </form>
+        </div>
         {cart.length > 0 && (
           <button
-            className={s.checkout__removeAll}
+            className={s.checkout__clear}
             onClick={() => {
               clearCart();
             }}
@@ -78,7 +103,7 @@ const Checkout = ({ user, cart, addToCart, removeFromCart, clearCart }) => {
                 clearCart();
               }
             }}>
-            Remove All
+            Clear Basket
           </button>
         )}
       </div>
@@ -88,7 +113,6 @@ const Checkout = ({ user, cart, addToCart, removeFromCart, clearCart }) => {
 
 const mapStateToProps = (state) => ({
   cart: state.cart,
-  user: state.user,
 });
 const mapDispatchToProps = (dispatch) => ({
   addToCart: (item) => {
