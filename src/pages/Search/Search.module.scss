@@ -1,0 +1,17 @@
+.products {
+  padding: 5rem 2em 5rem;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(25rem, 1fr));
+  gap: 3rem;
+
+  & > * {
+    justify-self: center;
+  }
+}
+
+.warning {
+  padding: 2em;
+  text-align: center;
+  font-size: 3rem;
+}
