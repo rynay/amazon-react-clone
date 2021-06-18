@@ -11,6 +11,7 @@ export const init = () => (dispatch) => {
       dispatch(setUser(localUser));
     } else {
       dispatch(setUser(null));
+      dispatch(clearCart());
     }
   });
   return () => listener();
@@ -87,7 +88,7 @@ export const removeFromCart = (payload) => ({
 });
 export const clearCart = () => ({ type: TYPES.CLEAR_CART });
 
-const addNotification = (payload) => ({
+export const addNotification = (payload) => ({
   type: TYPES.ADD_NOTIFICATION,
   payload,
 });

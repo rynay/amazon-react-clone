@@ -167,10 +167,10 @@
     }
 
     button {
+      cursor: not-allowed;
       padding: 0.5em;
       position: relative;
       border: 0;
-      cursor: pointer;
       background-image: linear-gradient(
         to bottom,
         rgb(255, 201, 101),

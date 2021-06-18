@@ -66,10 +66,7 @@ const Header = ({ cart, user, logout, country = 'Russian Federation' }) => {
             <span>Sign In</span>
           </Link>
         )}
-        <Link className={s.header__navItem} to={ROUTES.RETURNS_AND_ORDERS}>
-          <span>Returns</span>
-          <span>& Orders</span>
-        </Link>
+
         <Link
           className={`${s.header__navItem} ${s.header__navCart}`}
           to={ROUTES.CHECKOUT}

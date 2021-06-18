@@ -4,16 +4,38 @@ import s from './Checkout.module.scss';
 import FlipMove from 'react-flip-move';
 import { Remove, Add } from '@material-ui/icons';
 import { useState } from 'react';
+import { Notification } from '../../components/Notification';
 
-const Checkout = ({ cart, addToCart, removeFromCart, clearCart }) => {
+const Checkout = ({
+  cart,
+  addNotification,
+  removeNotification,
+  notifications,
+  addToCart,
+  removeFromCart,
+  clearCart,
+}) => {
   const [isChecked, setIsChecked] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const message = 'Sorry payment does not available';
+    if (
+      notifications?.some((notification) => notification.message === message)
+    ) {
+      return;
+    }
+    const id = Math.random();
+    addNotification({ message, id });
+    const timer = setTimeout(() => {
+      removeNotification(id);
+    }, 5000);
+    return () => clearInterval(timer);
   };
 
   return (
     <div className={s.checkout}>
+      <Notification />
       <div className={s.checkout__left}>
         <div className={s.checkout__bannerContainer}>
           <img src="/banner.jpg" alt="" />
@@ -113,6 +135,7 @@ const Checkout = ({ cart, addToCart, removeFromCart, clearCart }) => {
 
 const mapStateToProps = (state) => ({
   cart: state.cart,
+  notifications: state.notifications,
 });
 const mapDispatchToProps = (dispatch) => ({
   addToCart: (item) => {
@@ -124,6 +147,8 @@ const mapDispatchToProps = (dispatch) => ({
   clearCart: () => {
     dispatch(AC.clearCart());
   },
+  addNotification: (notification) => dispatch(AC.addNotification(notification)),
+  removeNotification: (id) => dispatch(AC.removeNotification(id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Checkout);
