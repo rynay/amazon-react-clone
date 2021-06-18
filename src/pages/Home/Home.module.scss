@@ -12,6 +12,10 @@
     grid-template-columns: repeat(auto-fill, minmax(33rem, 1fr));
     gap: 3rem;
 
+    @media screen and (max-width: 30em) {
+      grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+    }
+
     & > * {
       justify-self: center;
     }
