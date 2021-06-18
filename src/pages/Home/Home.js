@@ -23,7 +23,7 @@ const Home = ({ setPath }) => {
       <Slider />
       <Notification />
       <article className={s.home__products}>
-        {products.slice(0, 15).map((item) => (
+        {products.map((item) => (
           <Product key={item.id} product={item} />
         ))}
       </article>

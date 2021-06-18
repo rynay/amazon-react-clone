@@ -6,7 +6,6 @@ import { Notification } from '../../components/Notification';
 import s from './Search.module.scss';
 import { connect } from 'react-redux';
 import * as AC from '../../redux/AC';
-import FlipMove from 'react-flip-move';
 
 const Search = ({ setPath }) => {
   const {
@@ -36,11 +35,9 @@ const Search = ({ setPath }) => {
         </h3>
       )}
       <article className={s.products}>
-        <FlipMove>
-          {result.map((item) => (
-            <Product key={item.id} product={item} />
-          ))}
-        </FlipMove>
+        {result.map((item) => (
+          <Product key={item.id} product={item} />
+        ))}
       </article>
     </>
   );

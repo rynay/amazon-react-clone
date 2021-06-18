@@ -1,16 +1,22 @@
 import * as ROUTES from '../../constants/ROUTES';
 import * as AC from '../../redux/AC';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { useState } from 'react';
 import { connect } from 'react-redux';
 import s from './Header.module.scss';
 import { Search, Room, ShoppingCart } from '@material-ui/icons';
 
 const Header = ({ cart, user, logout, country = 'Russian Federation' }) => {
+  const history = useHistory();
   const [input, setInput] = useState('');
   const [isInputFocused, setIsInputFocused] = useState(false);
   const handleSearch = (e) => {
     e.preventDefault();
+    if (input.trim()) {
+      history.push(`/search/${input.trim()}`);
+    } else {
+      history.push(`/`);
+    }
   };
   return (
     <header className={s.header}>
