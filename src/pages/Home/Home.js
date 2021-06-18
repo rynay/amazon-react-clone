@@ -3,8 +3,21 @@ import Slider from '../../components/sliders/Home';
 import Product from '../../components/Product';
 import { Notification } from '../../components/Notification';
 import { products } from '../../products';
+import { useRouteMatch } from 'react-router-dom';
+import { useEffect } from 'react';
+import { connect } from 'react-redux';
+import * as AC from '../../redux/AC';
 
-const Home = () => {
+const Home = ({ setPath }) => {
+  const { path } = useRouteMatch();
+  useEffect(() => {
+    setPath(path);
+
+    return () => {
+      setPath(null);
+    };
+  }, [path]);
+
   return (
     <div className={s.home}>
       <Slider />
@@ -18,4 +31,8 @@ const Home = () => {
   );
 };
 
-export default Home;
+const mapDispatchToProps = (dispatch) => ({
+  setPath: (path) => dispatch(AC.setPath(path)),
+});
+
+export default connect(null, mapDispatchToProps)(Home);

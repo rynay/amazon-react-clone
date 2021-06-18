@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import * as AC from '../../redux/AC';
 import s from './Checkout.module.scss';
 import FlipMove from 'react-flip-move';
+import { Remove, Add } from '@material-ui/icons';
 
 const Checkout = ({ cart, addToCart, removeFromCart, clearCart }) => {
   return (
@@ -23,30 +24,35 @@ const Checkout = ({ cart, addToCart, removeFromCart, clearCart }) => {
                 <div className={s.item__checkout}>
                   <div className={s.item__count}>
                     <button
+                      className={`${s.item__button} ${s.item__button_remove}`}
                       onClick={() => {
                         removeFromCart(item);
                       }}
                       onKeyDown={(e) => {
-                        if (e.key == 'Enter') {
+                        if (e.key === 'Enter') {
                           removeFromCart(item);
                         }
                       }}>
-                      -
+                      <Remove />
                     </button>
-                    <p>{item.count}</p>
+                    <p className={s.item__countNumber}>{item.count}</p>
                     <button
+                      className={`${s.item__button} ${s.item__button_add}`}
                       onClick={() => {
                         addToCart(item);
                       }}
                       onKeyDown={(e) => {
-                        if (e.key == 'Enter') {
+                        if (e.key === 'Enter') {
                           addToCart(item);
                         }
                       }}>
-                      +
+                      <Add />
                     </button>
                   </div>
-                  <p>{item.total}$</p>
+                  <p className={s.item__total}>
+                    <span>Subtotal: </span>
+                    <span className={s.item__price}>{item.total} $</span>
+                  </p>
                 </div>
               </li>
             ))}

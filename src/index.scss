@@ -4,9 +4,11 @@ html {
 }
 
 body {
+  font-family: 'Roboto', sans-serif;
   background-color: #eaeded;
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   color: #0f1111;
+  overflow-y: scroll;
 }
 
 *,

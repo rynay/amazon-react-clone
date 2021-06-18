@@ -7,6 +7,9 @@
   &__right {
     flex: 1;
   }
+  &__list {
+    padding: 1em 0;
+  }
 }
 
 .item {
@@ -14,11 +17,44 @@
   background-color: #fff;
   border: 0.1rem solid #ccc;
   display: flex;
-
-  &:first-child {
-    margin-top: 1rem;
-  }
   margin-bottom: 1rem;
+
+  &__checkout {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  &__count {
+    padding: 1em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &Number {
+      min-width: 5rem;
+      text-align: center;
+    }
+  }
+  &__button {
+    cursor: pointer;
+    height: 3rem;
+    width: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__price {
+    display: inline-block;
+    min-width: 7rem;
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  &__total {
+    font-weight: bold;
+  }
 
   &__imageContainer {
     max-height: 12rem;

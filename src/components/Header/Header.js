@@ -76,7 +76,6 @@ const Header = ({ user, logout, country = 'Russian Federation' }) => {
           aria-label="Shopping cart">
           <span>
             <ShoppingCart />
-            <span>5</span>
           </span>
         </Link>
       </nav>
