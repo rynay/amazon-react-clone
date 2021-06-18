@@ -1,9 +1,13 @@
 .notification {
   position: fixed;
   z-index: 99999;
-  top: 5vw;
+  top: 7rem;
   right: 2em;
   width: 25rem;
+
+  @media screen and (max-width: 50em) {
+    display: none;
+  }
 
   &__item {
     border: 0.2rem solid rgb(255, 81, 0);
