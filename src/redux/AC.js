@@ -112,7 +112,11 @@ export const removeFromCart = (payload) => (dispatch, getState) => {
   dispatch({ type: TYPES.REMOVE_FROM_CART, payload });
   firestore.collection('carts').doc(user.uid).set({ items: getState().cart });
 };
-export const clearCart = () => ({ type: TYPES.CLEAR_CART });
+export const clearCart = () => (dispatch, getState) => {
+  const { user } = getState();
+  dispatch({ type: TYPES.CLEAR_CART });
+  firestore.collection('carts').doc(user.uid).set({ items: [] });
+};
 export const setCart = (payload) => ({ type: TYPES.SET_CART, payload });
 
 export const addNotification = (payload) => ({
