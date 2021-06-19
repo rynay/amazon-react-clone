@@ -1,7 +1,9 @@
 import * as TYPES from '../TYPES';
 
-export const cartReducer = (state = [], action) => {
+export const cartReducer = (state = null, action) => {
   switch (action.type) {
+    case TYPES.SET_CART:
+      return action.payload;
     case TYPES.ADD_TO_CART: {
       const target = state.findIndex((item) => item.id === action.payload.id);
       if (target !== -1) {

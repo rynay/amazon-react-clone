@@ -1,4 +1,11 @@
 .container {
   max-width: 160rem;
   margin: 0 auto;
+  position: relative;
+
+  margin-top: 5.75rem;
+
+  @media screen and (max-width: 45em) {
+    margin-top: 15rem;
+  }
 }

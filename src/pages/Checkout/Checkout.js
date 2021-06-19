@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { Notification } from '../../components/Notification';
 
 const Checkout = ({
-  cart,
+  cart = [],
   addNotification,
   removeNotification,
   notifications,

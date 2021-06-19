@@ -23,9 +23,11 @@ const Home = ({ setPath }) => {
       <Slider />
       <Notification />
       <article className={s.home__products}>
-        {products.map((item) => (
-          <Product key={item.id} product={item} />
-        ))}
+        {[...products]
+          .sort((a, b) => b.price - a.price)
+          .map((item) => (
+            <Product key={item.id} product={item} />
+          ))}
       </article>
     </div>
   );

@@ -7,8 +7,32 @@ export const init = () => (dispatch) => {
     if (user) {
       localStorage.setItem('user', JSON.stringify(user));
       dispatch(setUser(user));
+      firestore
+        .collection('carts')
+        .doc(user.uid)
+        .get()
+        .then((doc) => {
+          if (doc.exists) {
+            dispatch(setCart([...doc.data().items]));
+          } else {
+            firestore.collection('carts').doc(user.uid).set({ items: [] });
+            dispatch(setCart([]));
+          }
+        });
     } else if (localUser) {
       dispatch(setUser(localUser));
+      firestore
+        .collection('carts')
+        .doc(localUser.uid)
+        .get()
+        .then((doc) => {
+          if (doc.exists) {
+            dispatch(setCart([...doc.data().items]));
+          } else {
+            firestore.collection('carts').doc(localUser.uid).set({ items: [] });
+            dispatch(setCart([]));
+          }
+        });
     } else {
       dispatch(setUser(null));
       dispatch(clearCart());
@@ -64,10 +88,11 @@ const firebaseLogout = () => {
 export const setError = (payload) => ({ type: TYPES.SET_ERROR, payload });
 const setUser = (payload) => ({ type: TYPES.SET_USER, payload });
 export const addToCart = (payload) => (dispatch, getState) => {
-  const { path } = getState();
+  const { path, user } = getState();
   const id = Math.random();
   let timer = () => {};
   dispatch({ type: TYPES.ADD_TO_CART, payload });
+  firestore.collection('carts').doc(user.uid).set({ items: getState().cart });
   if (path) {
     dispatch(
       addNotification({
@@ -82,11 +107,13 @@ export const addToCart = (payload) => (dispatch, getState) => {
   }
   return () => clearTimeout(timer);
 };
-export const removeFromCart = (payload) => ({
-  type: TYPES.REMOVE_FROM_CART,
-  payload,
-});
+export const removeFromCart = (payload) => (dispatch, getState) => {
+  const { user } = getState();
+  dispatch({ type: TYPES.REMOVE_FROM_CART, payload });
+  firestore.collection('carts').doc(user.uid).set({ items: getState().cart });
+};
 export const clearCart = () => ({ type: TYPES.CLEAR_CART });
+export const setCart = (payload) => ({ type: TYPES.SET_CART, payload });
 
 export const addNotification = (payload) => ({
   type: TYPES.ADD_NOTIFICATION,
