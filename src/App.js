@@ -13,6 +13,7 @@ const Home = lazy(() => import('./pages/Home/index'));
 const Search = lazy(() => import('./pages/Search/index'));
 const SignUp = lazy(() => import('./pages/SignUp/index'));
 const Checkout = lazy(() => import('./pages/Checkout/index'));
+const NotFound = lazy(() => import('./pages/NotFound/index'));
 
 const App = ({ init, user }) => {
   useEffect(() => {
@@ -54,6 +55,10 @@ const App = ({ init, user }) => {
             />
             <Route path={ROUTES.SEARCH} component={Search} />
             <Route exact path={ROUTES.HOME} component={Home} />
+            <Route>
+              <Header />
+              <NotFound />
+            </Route>
           </Suspense>
         </Switch>
       </main>
