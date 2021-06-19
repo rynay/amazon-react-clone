@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { Notification } from '../../components/Notification';
 
 const Checkout = ({
-  cart = [],
+  cart,
   addNotification,
   removeNotification,
   notifications,
@@ -42,13 +42,13 @@ const Checkout = ({
         </div>
         <div
           className={`${s.checkout__warning} ${
-            cart.length === 0 ? s.checkout__warning_open : ''
+            cart?.length === 0 ? s.checkout__warning_open : ''
           }`}>
           Your shopping Basket is Empty
         </div>
         <ul className={s.checkout__list}>
           <FlipMove>
-            {cart.map((item) => (
+            {cart?.map((item) => (
               <li key={item.id} className={s.item}>
                 <div className={s.item__imageContainer}>
                   <img src={item.img} alt="" />
@@ -97,9 +97,10 @@ const Checkout = ({
       <div className={s.checkout__right}>
         <div className={s.proceed}>
           <p className={s.proceed__subtotal}>
-            Subtotal ({cart.reduce((acc, item) => acc + +item.count, 0)} item
-            {cart.reduce((acc, item) => acc + +item.count, 0) === 1 ? '' : 's'}
-            ): <span>$ {cart.reduce((acc, item) => acc + +item.total, 0)}</span>
+            Subtotal ({cart?.reduce((acc, item) => acc + +item.count, 0)} item
+            {cart?.reduce((acc, item) => acc + +item.count, 0) === 1 ? '' : 's'}
+            ):{' '}
+            <span>$ {cart?.reduce((acc, item) => acc + +item.total, 0)}</span>
           </p>
           <form onSubmit={handleSubmit} className={s.proceed__form}>
             <div>
@@ -114,7 +115,7 @@ const Checkout = ({
             <button>Proceed to Payment</button>
           </form>
         </div>
-        {cart.length > 0 && (
+        {cart?.length > 0 && (
           <button
             className={s.checkout__clear}
             onClick={() => {
@@ -134,7 +135,7 @@ const Checkout = ({
 };
 
 const mapStateToProps = (state) => ({
-  cart: state.cart,
+  cart: state.cart || [],
   notifications: state.notifications,
 });
 const mapDispatchToProps = (dispatch) => ({

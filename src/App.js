@@ -8,7 +8,7 @@ import { ProtectedRoute } from './components/ProtectedRoute';
 import { lazy, Suspense } from 'react';
 import s from './App.module.scss';
 import SignIn from './pages/SignIn';
-import { firestore } from './lib/firebase';
+import { Spinner } from './components/Spinner';
 
 const Home = lazy(() => import('./pages/Home/index'));
 const Search = lazy(() => import('./pages/Search/index'));
@@ -34,7 +34,7 @@ const App = ({ init, user }) => {
         component={Header}
       />
       <main className={s.container}>
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<Spinner />}>
           <Switch>
             <ProtectedRoute
               path={ROUTES.SIGN_IN}

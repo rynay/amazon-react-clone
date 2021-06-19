@@ -85,10 +85,11 @@ const Header = ({
           <span>
             <ShoppingCart />
             <span className={s.header__cartCount}>
-              {cart && cart.length === 0 && '0'}
-              {cart &&
-                cart.length !== 0 &&
-                cart.reduce((acc, item) => acc + +item.count, 0)}
+              {cart && cart.length === 0
+                ? '0'
+                : !cart
+                ? '0'
+                : cart.reduce((acc, item) => acc + +item.count, 0)}
             </span>
           </span>
         </Link>
