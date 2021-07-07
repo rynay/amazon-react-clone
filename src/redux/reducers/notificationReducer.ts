@@ -1,6 +1,9 @@
 import * as TYPES from '../TYPES';
 
-export const notificationReducer = (state = [], action) => {
+export const notificationReducer = (
+  state = [],
+  action: { type: string; payload?: any }
+) => {
   switch (action.type) {
     case TYPES.ADD_NOTIFICATION:
       return [...state, action.payload];

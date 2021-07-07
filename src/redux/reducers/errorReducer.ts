@@ -1,8 +1,11 @@
 import * as TYPES from '../TYPES';
 
-export const pathReducer = (state = null, action) => {
+export const errorReducer = (
+  state = null,
+  action: { type: string; payload?: any }
+) => {
   switch (action.type) {
-    case TYPES.SET_PATH:
+    case TYPES.SET_ERROR:
       return action.payload;
     default:
       return state;
