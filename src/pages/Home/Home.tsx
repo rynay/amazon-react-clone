@@ -4,7 +4,7 @@ import Product from '../../components/Product'
 import { Notification } from '../../components/Notification'
 import { products } from '../../products'
 import { useRouteMatch } from 'react-router-dom'
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { setPath } from '../../redux/reducers/pathSlice'
 

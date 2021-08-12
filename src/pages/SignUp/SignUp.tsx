@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from 'react'
+import { FormEvent, useState } from 'react'
 import s from '../SignIn-SignUp.module.scss'
 import * as ROUTES from '../../constants/ROUTES'
 import { Link } from 'react-router-dom'

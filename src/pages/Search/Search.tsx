@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useRouteMatch } from 'react-router-dom'
 import { products } from '../../products'
 import Product from '../../components/Product'

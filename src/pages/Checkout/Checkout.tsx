@@ -1,7 +1,7 @@
 import s from './Checkout.module.scss'
 import FlipMove from 'react-flip-move'
 import { Remove, Add } from '@material-ui/icons'
-import React, { FormEvent, useState } from 'react'
+import { FormEvent, useState } from 'react'
 import { Notification } from '../../components/Notification'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootStore } from '../../redux/store'
