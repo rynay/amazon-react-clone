@@ -1,6 +1,6 @@
-import firebase from 'firebase/app';
-import 'firebase/auth';
-import 'firebase/firestore';
+import firebase from 'firebase/app'
+import 'firebase/auth'
+import 'firebase/firestore'
 
 const config = {
   apiKey: 'AIzaSyARm11HTINNQy9RJ008o86EILr9a3dUwKM',
@@ -9,8 +9,8 @@ const config = {
   storageBucket: 'amazo-react-clone.appspot.com',
   messagingSenderId: '191799515558',
   appId: '1:191799515558:web:06599e8c94b2acbd9c1767',
-};
+}
 
-const app = firebase.initializeApp(config);
-export const auth = app.auth();
-export const firestore = app.firestore();
+const app = firebase.initializeApp(config)
+export const auth = app.auth()
+export const firestore = app.firestore()
