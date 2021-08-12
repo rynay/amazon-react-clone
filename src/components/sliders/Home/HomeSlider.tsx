@@ -1,9 +1,9 @@
-import { useEffect } from 'react';
-import { useState, useMemo } from 'react';
-import s from './HomeSlider.module.scss';
+import React, { useEffect } from 'react'
+import { useState, useMemo } from 'react'
+import s from './HomeSlider.module.scss'
 
 const HomeSlider = () => {
-  const [currentImage, setCurrentImage] = useState(0);
+  const [currentImage, setCurrentImage] = useState(0)
   const images = useMemo(
     () => [
       '/slide-0.jpg',
@@ -14,17 +14,17 @@ const HomeSlider = () => {
       '/slide-5.jpg',
     ],
     []
-  );
+  )
   useEffect(() => {
     const interval = setInterval(() => {
       if (currentImage < 5) {
-        setCurrentImage((current) => current + 1);
+        setCurrentImage((current) => current + 1)
       } else if (currentImage === 5) {
-        setCurrentImage(0);
+        setCurrentImage(0)
       }
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [currentImage]);
+    }, 5000)
+    return () => clearInterval(interval)
+  }, [currentImage])
   return (
     <div className={s.slider}>
       <div className={s.slider__overlay}></div>
@@ -45,7 +45,7 @@ const HomeSlider = () => {
         />
       ))}
     </div>
-  );
-};
+  )
+}
 
-export default HomeSlider;
+export default HomeSlider
