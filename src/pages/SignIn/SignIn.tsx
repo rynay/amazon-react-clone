@@ -1,25 +1,29 @@
-import { connect } from 'react-redux';
-import { useState } from 'react';
-import s from '../SignIn-SignUp.module.scss';
-import * as AC from '../../redux/AC';
-import * as ROUTES from '../../constants/ROUTES';
-import { Link } from 'react-router-dom';
-import { useEffect } from 'react';
+import React, { FormEvent, useState } from 'react'
+import s from '../SignIn-SignUp.module.scss'
+import * as ROUTES from '../../constants/ROUTES'
+import { Link } from 'react-router-dom'
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppDispatch, RootStore } from '../../redux/store'
+import { signIn } from '../../redux/AC'
+import { setError } from '../../redux/reducers/errorSlice'
 
-const SignIn = ({ error, setError, signIn }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+const SignIn = () => {
+  const dispatch: AppDispatch = useDispatch()
+  const error = useSelector((store: RootStore) => store.error.value)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
     if (email.trim() && password.trim()) {
-      signIn({ email, password });
+      dispatch(signIn({ email, password }))
     }
-  };
+  }
 
   useEffect(() => {
-    if (error) setError(null);
-  }, [email, password]);
+    if (error) dispatch(setError(null))
+  }, [email, password])
 
   return (
     <div className={s.overlay}>
@@ -73,16 +77,7 @@ const SignIn = ({ error, setError, signIn }) => {
         </div>
       </section>
     </div>
-  );
-};
+  )
+}
 
-const mapStateToProps = (state) => ({
-  error: state.error,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  signIn: (data) => dispatch(AC.signIn(data)),
-  setError: (data) => dispatch(AC.setError(data)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(SignIn);
+export default SignIn
