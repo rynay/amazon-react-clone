@@ -1,4 +1,4 @@
-import React, { JSXElementConstructor } from 'react'
+import { JSXElementConstructor } from 'react'
 import { Redirect, Route } from 'react-router-dom'
 
 type Props = {

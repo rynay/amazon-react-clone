@@ -1,4 +1,4 @@
-import React from 'react'
+import { StrictMode } from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
 import './index.scss'
@@ -7,12 +7,12 @@ import { Provider } from 'react-redux'
 import { store } from './redux/store'
 
 ReactDOM.render(
-  <React.StrictMode>
+  <StrictMode>
     <Provider store={store}>
       <Router>
         <App />
       </Router>
     </Provider>
-  </React.StrictMode>,
+  </StrictMode>,
   document.getElementById('root')
 )

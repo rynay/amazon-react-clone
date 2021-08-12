@@ -1,6 +1,6 @@
 import * as ROUTES from '../../constants/ROUTES'
 import { Link, useHistory } from 'react-router-dom'
-import React, { FormEvent, useState } from 'react'
+import { FormEvent, useState } from 'react'
 import s from './Header.module.scss'
 import { Search, Room, ShoppingCart } from '@material-ui/icons'
 import { useDispatch, useSelector } from 'react-redux'

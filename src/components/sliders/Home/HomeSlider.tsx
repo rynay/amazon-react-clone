@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useState, useMemo } from 'react'
 import s from './HomeSlider.module.scss'
 

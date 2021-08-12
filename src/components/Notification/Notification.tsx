@@ -1,4 +1,3 @@
-import React from 'react'
 import s from './Notification.module.scss'
 import FlipMove from 'react-flip-move'
 import { Close } from '@material-ui/icons'
