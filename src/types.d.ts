@@ -1,5 +1,6 @@
 type TUser = {
   uid: string
+  displayName: string
 }
 
 type TCartItem = {

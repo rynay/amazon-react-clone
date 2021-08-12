@@ -1,28 +1,28 @@
-import * as ROUTES from '../../constants/ROUTES';
-import * as AC from '../../redux/AC';
-import { Link, useHistory } from 'react-router-dom';
-import { useState } from 'react';
-import { connect } from 'react-redux';
-import s from './Header.module.scss';
-import { Search, Room, ShoppingCart } from '@material-ui/icons';
+import * as ROUTES from '../../constants/ROUTES'
+import { Link, useHistory } from 'react-router-dom'
+import React, { FormEvent, useState } from 'react'
+import s from './Header.module.scss'
+import { Search, Room, ShoppingCart } from '@material-ui/icons'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppDispatch, RootStore } from '../../redux/store'
+import { logout } from '../../redux/AC'
 
-const Header = ({
-  cart = [],
-  user,
-  logout,
-  country = 'Russian Federation',
-}) => {
-  const history = useHistory();
-  const [input, setInput] = useState('');
-  const [isInputFocused, setIsInputFocused] = useState(false);
-  const handleSearch = (e) => {
-    e.preventDefault();
+const Header = ({ country = 'Russian Federation' }) => {
+  const cart = useSelector((store: RootStore) => store.cart.value)
+  const user = useSelector((store: RootStore) => store.user.value)
+  const dispatch: AppDispatch = useDispatch()
+
+  const history = useHistory()
+  const [input, setInput] = useState('')
+  const [isInputFocused, setIsInputFocused] = useState(false)
+  const handleSearch = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
     if (input.trim()) {
-      history.push(`/search/${input.trim()}`);
+      history.push(`/search/${input.trim()}`)
     } else {
-      history.push(`/`);
+      history.push(`/`)
     }
-  };
+  }
   return (
     <header className={s.header}>
       <Link to={ROUTES.HOME}>
@@ -64,10 +64,10 @@ const Header = ({
             className={s.header__navItem}
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
-                return logout();
+                return dispatch(logout())
               }
             }}
-            onClick={() => logout()}>
+            onClick={() => dispatch(logout())}>
             <span>Hello, {user.displayName}</span>
             <span>Sign Out</span>
           </button>
@@ -89,21 +89,19 @@ const Header = ({
                 ? '0'
                 : !cart
                 ? '0'
-                : cart.reduce((acc, item) => acc + +item.count, 0)}
+                : cart.reduce((acc, item) => {
+                    if (item.count) {
+                      return acc + +item.count
+                    } else {
+                      return acc
+                    }
+                  }, 0)}
             </span>
           </span>
         </Link>
       </nav>
     </header>
-  );
-};
+  )
+}
 
-const mapStateToProps = (state) => ({
-  user: state.user,
-  cart: state.cart,
-});
-const mapDispatchToProps = (dispatch) => ({
-  logout: () => dispatch(AC.logout()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default Header
