@@ -1,3 +1,7 @@
+type TUser = {
+  id: number
+}
+
 type TCartItem = {
   id: number
   count: number
@@ -5,4 +9,9 @@ type TCartItem = {
   price: number
 }
 
+type TNotification = {
+  id: number
+}
+
 type TError = string
+type TPath = string
