@@ -1,37 +1,43 @@
-import { connect } from 'react-redux';
-import * as AC from '../../redux/AC';
-import s from './Checkout.module.scss';
-import FlipMove from 'react-flip-move';
-import { Remove, Add } from '@material-ui/icons';
-import { useState } from 'react';
-import { Notification } from '../../components/Notification';
-
-const Checkout = ({
-  cart,
+import s from './Checkout.module.scss'
+import FlipMove from 'react-flip-move'
+import { Remove, Add } from '@material-ui/icons'
+import React, { FormEvent, useState } from 'react'
+import { Notification } from '../../components/Notification'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppDispatch, RootStore } from '../../redux/store'
+import {
   addNotification,
   removeNotification,
-  notifications,
-  addToCart,
-  removeFromCart,
-  clearCart,
-}) => {
-  const [isChecked, setIsChecked] = useState(false);
+} from '../../redux/reducers/notificationSlice'
+import {
+  handleAddToCart,
+  handleClearCart,
+  handleRemoveFromCart,
+} from '../../redux/AC'
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const message = 'Sorry payment does not available';
+const Checkout = () => {
+  const dispatch: AppDispatch = useDispatch()
+  const [isChecked, setIsChecked] = useState(false)
+  const notifications = useSelector(
+    (store: RootStore) => store.notifications.value
+  )
+  const cart = useSelector((store: RootStore) => store.cart.value)
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const message = 'Sorry payment does not available'
     if (
       notifications?.some((notification) => notification.message === message)
     ) {
-      return;
+      return
     }
-    const id = Math.random();
-    addNotification({ message, id });
+    const id = Math.random()
+    addNotification({ message, id })
     const timer = setTimeout(() => {
-      removeNotification(id);
-    }, 5000);
-    return () => clearInterval(timer);
-  };
+      removeNotification(id)
+    }, 5000)
+    return () => clearInterval(timer)
+  }
 
   return (
     <div className={s.checkout}>
@@ -61,11 +67,11 @@ const Checkout = ({
                     <button
                       className={`${s.item__button} ${s.item__button_remove}`}
                       onClick={() => {
-                        removeFromCart(item);
+                        dispatch(handleRemoveFromCart(item))
                       }}
                       onKeyDown={(e) => {
                         if (e.key === 'Enter') {
-                          removeFromCart(item);
+                          dispatch(handleRemoveFromCart(item))
                         }
                       }}>
                       <Remove />
@@ -74,11 +80,11 @@ const Checkout = ({
                     <button
                       className={`${s.item__button} ${s.item__button_add}`}
                       onClick={() => {
-                        addToCart(item);
+                        dispatch(handleAddToCart(item))
                       }}
                       onKeyDown={(e) => {
                         if (e.key === 'Enter') {
-                          addToCart(item);
+                          dispatch(handleAddToCart(item))
                         }
                       }}>
                       <Add />
@@ -105,8 +111,8 @@ const Checkout = ({
           <form onSubmit={handleSubmit} className={s.proceed__form}>
             <div>
               <input
-                onChange={(e) => setIsChecked(e.target.value)}
-                value={isChecked}
+                onChange={(e) => setIsChecked(e.target.checked)}
+                checked={isChecked}
                 type="checkbox"
                 id="checkbox"
               />
@@ -115,15 +121,15 @@ const Checkout = ({
             <button>Proceed to Payment</button>
           </form>
         </div>
-        {cart?.length > 0 && (
+        {cart && cart.length > 0 && (
           <button
             className={s.checkout__clear}
             onClick={() => {
-              clearCart();
+              dispatch(handleClearCart())
             }}
             onKeyDown={(e) => {
               if (e.key == 'Enter') {
-                clearCart();
+                dispatch(handleClearCart())
               }
             }}>
             Clear Basket
@@ -131,25 +137,7 @@ const Checkout = ({
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-const mapStateToProps = (state) => ({
-  cart: state.cart || [],
-  notifications: state.notifications,
-});
-const mapDispatchToProps = (dispatch) => ({
-  addToCart: (item) => {
-    dispatch(AC.addToCart(item));
-  },
-  removeFromCart: (item) => {
-    dispatch(AC.removeFromCart(item));
-  },
-  clearCart: () => {
-    dispatch(AC.clearCart());
-  },
-  addNotification: (notification) => dispatch(AC.addNotification(notification)),
-  removeNotification: (id) => dispatch(AC.removeNotification(id)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Checkout);
+export default Checkout

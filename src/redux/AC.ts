@@ -24,7 +24,10 @@ export const init = () => (dispatch: AppDispatch) => {
         .doc(user.uid)
         .get()
         .then(
-          (doc: { exists: boolean; data: () => { items: TCartItem[] } }) => {
+          (doc: {
+            exists: boolean
+            data: () => { items: Required<TProduct>[] }
+          }) => {
             if (doc.exists) {
               dispatch(setCart([...doc.data().items]))
             } else {
@@ -40,7 +43,10 @@ export const init = () => (dispatch: AppDispatch) => {
         .doc(localUser.uid)
         .get()
         .then(
-          (doc: { exists: boolean; data: () => { items: TCartItem[] } }) => {
+          (doc: {
+            exists: boolean
+            data: () => { items: Required<TProduct>[] }
+          }) => {
             if (doc.exists) {
               dispatch(setCart([...doc.data().items]))
             } else {
@@ -48,13 +54,13 @@ export const init = () => (dispatch: AppDispatch) => {
                 .collection('carts')
                 .doc(localUser.uid)
                 .set({ items: [] })
-              dispatch(clearCart())
+              dispatch(handleClearCart())
             }
           }
         )
     } else {
       dispatch(setUser(null))
-      dispatch(clearCart())
+      dispatch(handleClearCart())
     }
   })
   return () => listener()
@@ -91,7 +97,7 @@ export const signUp =
   }
 export const logout = () => {
   localStorage.removeItem('user')
-  return (dispatch: Function) => {
+  return (dispatch: AppDispatch) => {
     const id = Math.random()
     firebaseLogout().then(() => {
       dispatch(
@@ -113,8 +119,7 @@ const firebaseLogout = () => {
 }
 
 export const handleAddToCart =
-  (payload: TCartItem) =>
-  (dispatch: AppDispatch, getState: () => RootStore) => {
+  (payload: TProduct) => (dispatch: AppDispatch, getState: () => RootStore) => {
     const { path, user } = getState()
     const id = Math.random()
     let timer: any
