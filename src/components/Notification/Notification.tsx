@@ -1,10 +1,17 @@
-import * as AC from '../../redux/AC';
-import { connect } from 'react-redux';
-import s from './Notification.module.scss';
-import FlipMove from 'react-flip-move';
-import { Close } from '@material-ui/icons';
+import React from 'react'
+import s from './Notification.module.scss'
+import FlipMove from 'react-flip-move'
+import { Close } from '@material-ui/icons'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppDispatch, RootStore } from '../../redux/store'
+import { removeNotification } from '../../redux/reducers/notificationSlice'
 
-const Notification = ({ notifications, removeNotification }) => {
+const Notification = () => {
+  const notifications = useSelector(
+    (store: RootStore) => store.notifications.value
+  )
+  const dispatch: AppDispatch = useDispatch()
+
   return (
     <div className={s.notification}>
       <FlipMove>
@@ -18,10 +25,10 @@ const Notification = ({ notifications, removeNotification }) => {
             <p className={s.notification__message}>{notification.message}</p>
             <button
               className={s.notification__button}
-              onClick={() => removeNotification(notification.id)}
+              onClick={() => dispatch(removeNotification(notification.id))}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
-                  removeNotification(notification.id);
+                  dispatch(removeNotification(notification.id))
                 }
               }}>
               <Close />
@@ -30,14 +37,6 @@ const Notification = ({ notifications, removeNotification }) => {
         ))}
       </FlipMove>
     </div>
-  );
-};
-
-const mapStateToProps = (state) => ({
-  notifications: state.notifications,
-});
-const mapDispatchToProps = (dispatch) => ({
-  removeNotification: (id) => dispatch(AC.removeNotification(id)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Notification);
+  )
+}
+export default Notification
