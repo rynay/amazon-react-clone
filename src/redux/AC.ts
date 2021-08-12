@@ -1,56 +1,83 @@
-import { firestore, auth } from '../lib/firebase';
-import * as TYPES from './TYPES';
+import { AppDispatch, RootStore } from './store'
+import { firestore, auth } from '../lib/firebase'
+import {
+  addNotification,
+  removeNotification,
+} from './reducers/notificationSlice'
+import {
+  addToCart,
+  clearCart,
+  removeFromCart,
+  setCart,
+} from './reducers/cartSlice'
+import { setError } from './reducers/errorSlice'
+import { setUser } from './reducers/userSlice'
 
-export const init = () => (dispatch: Function) => {
-  const listener = auth.onAuthStateChanged((user) => {
-    const localUser = JSON.parse(localStorage.getItem('user'));
+export const init = () => (dispatch: AppDispatch) => {
+  const listener = auth.onAuthStateChanged((user: TUser) => {
+    const localUser = JSON.parse(localStorage.getItem('user') || '')
     if (user) {
-      localStorage.setItem('user', JSON.stringify(user));
-      dispatch(setUser(user));
+      localStorage.setItem('user', JSON.stringify(user))
+      dispatch(setUser(user))
       firestore
         .collection('carts')
         .doc(user.uid)
         .get()
-        .then((doc) => {
-          if (doc.exists) {
-            dispatch(setCart([...doc.data().items]));
-          } else {
-            firestore.collection('carts').doc(user.uid).set({ items: [] });
-            dispatch(setCart([]));
+        .then(
+          (doc: { exists: boolean; data: () => { items: TCartItem[] } }) => {
+            if (doc.exists) {
+              dispatch(setCart([...doc.data().items]))
+            } else {
+              firestore.collection('carts').doc(user.uid).set({ items: [] })
+              dispatch(clearCart())
+            }
           }
-        });
+        )
     } else if (localUser) {
-      dispatch(setUser(localUser));
+      dispatch(setUser(localUser))
       firestore
         .collection('carts')
         .doc(localUser.uid)
         .get()
-        .then((doc) => {
-          if (doc.exists) {
-            dispatch(setCart([...doc.data().items]));
-          } else {
-            firestore.collection('carts').doc(localUser.uid).set({ items: [] });
-            dispatch(setCart([]));
+        .then(
+          (doc: { exists: boolean; data: () => { items: TCartItem[] } }) => {
+            if (doc.exists) {
+              dispatch(setCart([...doc.data().items]))
+            } else {
+              firestore
+                .collection('carts')
+                .doc(localUser.uid)
+                .set({ items: [] })
+              dispatch(clearCart())
+            }
           }
-        });
+        )
     } else {
-      dispatch(setUser(null));
-      dispatch(clearCart());
+      dispatch(setUser(null))
+      dispatch(clearCart())
     }
-  });
-  return () => listener();
-};
+  })
+  return () => listener()
+}
 
 export const signIn =
-  ({ email, password }) =>
-  (dispatch: Function) => {
+  ({ email, password }: { email: string; password: string }) =>
+  (dispatch: AppDispatch) => {
     return auth
       .signInWithEmailAndPassword(email, password)
-      .catch((error) => dispatch(setError(error.message)));
-  };
+      .catch((error: { message: string }) => dispatch(setError(error.message)))
+  }
 export const signUp =
-  ({ email, password, displayName }) =>
-  async (dispatch: Function) => {
+  ({
+    email,
+    password,
+    displayName,
+  }: {
+    email: string
+    password: string
+    displayName: string
+  }) =>
+  async (dispatch: AppDispatch) => {
     return auth
       .createUserWithEmailAndPassword(email, password)
       .then(() =>
@@ -58,53 +85,46 @@ export const signUp =
           displayName,
         })
       )
-      .catch((error) => {
-        dispatch(setError(error.message));
-      });
-  };
+      .catch((error: { message: string }) => {
+        dispatch(setError(error.message))
+      })
+  }
 export const logout = () => {
-  localStorage.removeItem('user');
+  localStorage.removeItem('user')
   return (dispatch: Function) => {
-    const id = Math.random();
+    const id = Math.random()
     firebaseLogout().then(() => {
       dispatch(
         addNotification({
           message: `You signed out`,
           id,
         })
-      );
+      )
       const timer = setTimeout(() => {
-        dispatch(removeNotification(id));
-      }, 5000);
-      return () => clearTimeout(timer);
-    });
-  };
-};
-
-const firebaseLogout = () => {
-  return auth.signOut();
-};
-
-type GeneralACType = (payload: any) => { type: string; payload: any };
-export const setError: GeneralACType = (payload) => ({
-  type: TYPES.SET_ERROR,
-  payload,
-});
-const setUser: GeneralACType = (payload) => ({ type: TYPES.SET_USER, payload });
-
-interface Item {
-  img: string;
-  title: string;
-  id: number;
+        dispatch(removeNotification(id))
+      }, 5000)
+      return () => clearTimeout(timer)
+    })
+  }
 }
 
-export const addToCart =
-  (payload: Item) => (dispatch: Function, getState: Function) => {
-    const { path, user } = getState();
-    const id = Math.random();
-    let timer: any;
-    dispatch({ type: TYPES.ADD_TO_CART, payload });
-    firestore.collection('carts').doc(user.uid).set({ items: getState().cart });
+const firebaseLogout = () => {
+  return auth.signOut()
+}
+
+export const handleAddToCart =
+  (payload: TCartItem) =>
+  (dispatch: AppDispatch, getState: () => RootStore) => {
+    const { path, user } = getState()
+    const id = Math.random()
+    let timer: any
+    dispatch(addToCart(payload))
+    if (user.value) {
+      firestore
+        .collection('carts')
+        .doc(user.value.uid)
+        .set({ items: getState().cart })
+    }
     if (path) {
       dispatch(
         addNotification({
@@ -112,39 +132,27 @@ export const addToCart =
           message: `${payload.title} was added to your cart`,
           id,
         })
-      );
+      )
       timer = setTimeout(() => {
-        dispatch(removeNotification(id));
-      }, 5000);
+        dispatch(removeNotification(id))
+      }, 5000)
     }
-    return () => clearTimeout(timer);
-  };
-export const removeFromCart =
-  (payload: any) => (dispatch: Function, getState: Function) => {
-    const { user } = getState();
-    dispatch({ type: TYPES.REMOVE_FROM_CART, payload });
-    firestore.collection('carts').doc(user.uid).set({ items: getState().cart });
-  };
-export const clearCart = () => (dispatch: Function, getState: Function) => {
-  const { user } = getState();
-  dispatch({ type: TYPES.CLEAR_CART });
-  firestore.collection('carts').doc(user.uid).set({ items: [] });
-};
-export const setCart: GeneralACType = (payload) => ({
-  type: TYPES.SET_CART,
-  payload,
-});
-
-export const addNotification: GeneralACType = (payload) => ({
-  type: TYPES.ADD_NOTIFICATION,
-  payload,
-});
-export const removeNotification: GeneralACType = (payload) => ({
-  type: TYPES.REMOVE_NOTIFICATION,
-  payload,
-});
-
-export const setPath: GeneralACType = (payload) => ({
-  type: TYPES.SET_PATH,
-  payload,
-});
+    return () => clearTimeout(timer)
+  }
+export const handleRemoveFromCart =
+  (payload: any) => (dispatch: AppDispatch, getState: () => RootStore) => {
+    const { user } = getState()
+    dispatch(removeFromCart(payload))
+    if (user.value) {
+      firestore
+        .collection('carts')
+        .doc(user.value.uid)
+        .set({ items: getState().cart })
+    }
+  }
+export const handleClearCart =
+  () => (dispatch: Function, getState: Function) => {
+    const { user } = getState()
+    dispatch(clearCart())
+    firestore.collection('carts').doc(user.uid).set({ items: [] })
+  }
