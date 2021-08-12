@@ -1,19 +1,23 @@
-import { connect } from 'react-redux';
-import { useState } from 'react';
-import s from '../SignIn-SignUp.module.scss';
-import * as AC from '../../redux/AC';
-import * as ROUTES from '../../constants/ROUTES';
-import { Link } from 'react-router-dom';
-import { useEffect } from 'react';
+import React, { FormEvent, useState } from 'react'
+import s from '../SignIn-SignUp.module.scss'
+import * as ROUTES from '../../constants/ROUTES'
+import { Link } from 'react-router-dom'
+import { useEffect } from 'react'
+import { AppDispatch, RootStore } from '../../redux/store'
+import { useDispatch, useSelector } from 'react-redux'
+import { signUp } from '../../redux/AC'
+import { setError } from '../../redux/reducers/errorSlice'
 
-const SignUp = ({ error, setError, signUp }) => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [repeatPassword, setRepeatPassword] = useState('');
+const SignUp = () => {
+  const dispatch: AppDispatch = useDispatch()
+  const error = useSelector((store: RootStore) => store.error.value)
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [repeatPassword, setRepeatPassword] = useState('')
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
     if (
       password === repeatPassword &&
       name.trim() &&
@@ -21,13 +25,13 @@ const SignUp = ({ error, setError, signUp }) => {
       password.trim() &&
       repeatPassword.trim()
     ) {
-      signUp({ email, password, displayName: name });
+      dispatch(signUp({ email, password, displayName: name }))
     }
-  };
+  }
 
   useEffect(() => {
-    if (error) setError(null);
-  }, [name, email, password, repeatPassword]);
+    if (error) dispatch(setError(null))
+  }, [name, email, password, repeatPassword])
 
   return (
     <div className={s.overlay}>
@@ -101,16 +105,7 @@ const SignUp = ({ error, setError, signUp }) => {
         </div>
       </section>
     </div>
-  );
-};
+  )
+}
 
-const mapStateToProps = (state) => ({
-  error: state.error,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  signUp: (data) => dispatch(AC.signUp(data)),
-  setError: (data) => dispatch(AC.setError(data)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
+export default SignUp
