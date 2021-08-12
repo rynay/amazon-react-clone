@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 const initialState = {
-  value: null as TCartItem[] | null,
+  value: null as Required<TProduct>[] | null,
 }
 
 const cartSlice = createSlice({
@@ -11,7 +11,8 @@ const cartSlice = createSlice({
     setCart: (state, action: PayloadAction<typeof initialState['value']>) => {
       state.value = action.payload
     },
-    addToCart: (state, action: PayloadAction<TCartItem>) => {
+    addToCart: (state, action: PayloadAction<TProduct>) => {
+      if (!state.value) state.value = []
       const target = state.value.findIndex(
         (item) => item.id === action.payload.id
       )
@@ -26,11 +27,12 @@ const cartSlice = createSlice({
         })
       }
     },
-    removeFromCart: (state, action: PayloadAction<TCartItem>) => {
+    removeFromCart: (state, action: PayloadAction<TProduct>) => {
+      if (!state.value) state.value = []
       const target = state.value.findIndex(
         (item) => item.id === action.payload.id
       )
-      if (target !== -1 && state[target].count === 1) {
+      if (target !== -1 && state.value[target].count === 1) {
         state.value = state.value.filter(
           (item) => item.id !== action.payload.id
         )

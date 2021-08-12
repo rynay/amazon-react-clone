@@ -1,17 +1,25 @@
+import React from 'react'
 import {
   AddShoppingCart,
   Star,
   StarHalf,
   StarOutline,
-} from '@material-ui/icons';
-import { useHistory } from 'react-router-dom';
-import * as ROUTES from '../../constants/ROUTES';
-import s from './Product.module.scss';
-import { connect } from 'react-redux';
-import * as AC from '../../redux/AC';
+} from '@material-ui/icons'
+import { useHistory } from 'react-router-dom'
+import * as ROUTES from '../../constants/ROUTES'
+import s from './Product.module.scss'
+import { handleAddToCart } from '../../redux/AC'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppDispatch, RootStore } from '../../redux/store'
 
-const Product = ({ product, user, addToCart }) => {
-  const history = useHistory();
+type Props = {
+  product: TProduct
+}
+
+const Product = ({ product }: Props) => {
+  const history = useHistory()
+  const dispatch: AppDispatch = useDispatch()
+  const user = useSelector((store: RootStore) => store.user.value)
 
   return (
     <section className={s.product}>
@@ -20,7 +28,7 @@ const Product = ({ product, user, addToCart }) => {
       </div>
       <h2 className={s.product__title}>{product.title}</h2>
       <p className={s.product__rating}>
-        {new Array(Math.floor(product.rating)).fill().map((_, i) => (
+        {new Array(Math.floor(product.rating)).fill(null).map((_, i) => (
           <span key={i}>
             <Star />
           </span>
@@ -33,7 +41,7 @@ const Product = ({ product, user, addToCart }) => {
             Math.floor(product.rating) -
             (Math.floor(product.rating) !== Math.ceil(product.rating) ? 1 : 0)
         )
-          .fill()
+          .fill(null)
           .map((_, i) => (
             <span key={i}>
               <StarOutline />
@@ -44,17 +52,17 @@ const Product = ({ product, user, addToCart }) => {
       <button
         onClick={() => {
           if (user) {
-            addToCart(product);
+            dispatch(handleAddToCart(product))
           } else {
-            history.push(ROUTES.SIGN_IN);
+            history.push(ROUTES.SIGN_IN)
           }
         }}
         onKeyDown={(e) => {
           if (e.key === 'Enter') {
             if (user) {
-              addToCart(product);
+              dispatch(handleAddToCart(product))
             } else {
-              history.push(ROUTES.SIGN_IN);
+              history.push(ROUTES.SIGN_IN)
             }
           }
         }}
@@ -65,14 +73,7 @@ const Product = ({ product, user, addToCart }) => {
         <span>Add to cart</span>
       </button>
     </section>
-  );
-};
+  )
+}
 
-const mapStateToProps = (state) => ({
-  user: state.user,
-});
-const mapDispatchToProps = (dispatch) => ({
-  addToCart: (item) => dispatch(AC.addToCart(item)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Product);
+export default Product

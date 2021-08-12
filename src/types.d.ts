@@ -3,7 +3,8 @@ type TUser = {
   displayName: string
 }
 
-type TCartItem = {
+type TProduct = {
+  rating: number
   id: number
   price: number
   img: string
