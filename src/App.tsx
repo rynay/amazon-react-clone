@@ -1,26 +1,30 @@
-import { useEffect } from 'react';
-import { connect } from 'react-redux';
-import { Switch, Route } from 'react-router-dom';
-import * as ROUTES from './constants/ROUTES';
-import * as AC from './redux/AC';
-import { Header } from './components/Header';
-import { ProtectedRoute } from './components/ProtectedRoute';
-import { lazy, Suspense } from 'react';
-import s from './App.module.scss';
-import SignIn from './pages/SignIn';
-import { Spinner } from './components/Spinner';
+import React, { useEffect } from 'react'
+import { Switch, Route } from 'react-router-dom'
+import * as ROUTES from './constants/ROUTES'
+import { Header } from './components/Header'
+import { ProtectedRoute } from './components/ProtectedRoute'
+import { lazy, Suspense } from 'react'
+import s from './App.module.scss'
+import SignIn from './pages/SignIn'
+import { Spinner } from './components/Spinner'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppDispatch, RootStore } from './redux/store'
+import { init } from './redux/AC'
 
-const Home = lazy(() => import('./pages/Home/index'));
-const Search = lazy(() => import('./pages/Search/index'));
-const SignUp = lazy(() => import('./pages/SignUp/index'));
-const Checkout = lazy(() => import('./pages/Checkout/index'));
-const NotFound = lazy(() => import('./pages/NotFound/index'));
+const Home = lazy(() => import('./pages/Home/index'))
+const Search = lazy(() => import('./pages/Search/index'))
+const SignUp = lazy(() => import('./pages/SignUp/index'))
+const Checkout = lazy(() => import('./pages/Checkout/index'))
+const NotFound = lazy(() => import('./pages/NotFound/index'))
 
-const App = ({ init, user }) => {
+const App = () => {
+  const dispatch: AppDispatch = useDispatch()
+  const user = useSelector((store: RootStore) => store.user.value)
+
   useEffect(() => {
-    const listener = init();
-    return () => listener();
-  }, []);
+    const listener = dispatch(init())
+    return () => listener()
+  }, [])
   return (
     <>
       <Route
@@ -64,15 +68,7 @@ const App = ({ init, user }) => {
         </Suspense>
       </main>
     </>
-  );
-};
+  )
+}
 
-const mapStateToProps = (state) => ({
-  user: state.user,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  init: () => dispatch(AC.init()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App
